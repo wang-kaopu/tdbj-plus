@@ -353,10 +353,9 @@ onMounted(() => {
       <div class="shop-title">{{ shop.name }}</div>
       <div class="shop-rate">
         <el-rate
-          v-model="shop.score"
+          :model-value="Number(shop.score) / 10"
           disabled
           :max="5"
-          :value="shop.score / 10"
           text-color="#F63"
           show-score
         />

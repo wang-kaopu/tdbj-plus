@@ -76,6 +76,17 @@ public class ShopController {
        return shopService.queryShopByType(typeId, current, x, y);
     }
 
+    /** 根据类型和坐标查询附近商铺。 */
+    @GetMapping("/of/nearby")
+    public Result queryNearbyShops(
+            @RequestParam("typeId") Integer typeId,
+            @RequestParam(value = "current", defaultValue = "1") Integer current,
+            @RequestParam("x") Double x,
+            @RequestParam("y") Double y
+    ) {
+        return shopService.queryShopByType(typeId, current, x, y);
+    }
+
     /**
      * 根据商铺名称关键字分页查询商铺信息
      * @param name 商铺名称关键字

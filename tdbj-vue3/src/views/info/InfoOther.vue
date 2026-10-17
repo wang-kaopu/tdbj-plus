@@ -4,6 +4,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { ArrowLeft, ChatDotRound } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores'
 import { getUser, getUserInfo } from '@/api/user'
+import { resolveBlogImageUrl } from '@/utils/blogImage'
 import {
   getBlogsOfUser,
   isFollowed,
@@ -129,7 +130,7 @@ const handleClick = (tab) => {
 
 const toOtherInfo = (id) => {
   router.push({
-    path: '/info/other',
+    path: '/InfoOther',
     query: { id }
   })
 }
@@ -173,7 +174,7 @@ const toOtherInfo = (id) => {
         <el-tab-pane label="笔记" name="1">
           <div v-for="b in blogs" :key="b.id" class="blog-item">
             <div class="blog-img">
-              <img :src="'/src/assets' + b.images.split(',')[0]" alt="" />
+              <img :src="resolveBlogImageUrl(b.images.split(',')[0])" alt="" />
             </div>
             <div class="blog-info">
               <div class="blog-title" v-html="b.title"></div>

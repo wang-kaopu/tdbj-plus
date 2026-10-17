@@ -16,6 +16,10 @@ export const indexQueryTypes = () => request.get('/shop-type/list')
 export const indexQueryHotBlogsScroll = (current) =>
   request.get('/blog/hot', { params: { current } })
 
+/** 按发布时间和同一时间戳内的偏移量获取关注用户的笔记。 */
+export const getFollowBlogs = (lastId, offset) =>
+  request.get('/blog/of/follow', { params: { lastId, offset } })
+
 // 首页：点赞获取博客数据，点击查看更多
 export const indexAddLike = (id) => request.put('/blog/like/' + id)
 // 首页：获取博客数据

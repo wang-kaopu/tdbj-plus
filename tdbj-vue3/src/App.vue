@@ -9,7 +9,7 @@ const userStore = useUserStore()
     <header class="site-header">
       <div class="site-header-inner">
         <router-link class="site-brand" to="/index"
-          >黑马<span>点评</span></router-link
+          >探店<span>笔记</span></router-link
         >
         <nav class="site-nav" aria-label="主导航">
           <router-link to="/index">发现</router-link>

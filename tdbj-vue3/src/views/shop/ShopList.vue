@@ -52,10 +52,9 @@
           <div class="shop-title shop-item">{{ s.name }}</div>
           <div class="shop-rate shop-item">
             <el-rate
-              v-model="s.score"
+              :model-value="Number(s.score) / 10"
               disabled
               :max="5"
-              :value="s.score / 10"
               text-color="#F63"
               show-score
             />
@@ -66,8 +65,8 @@
             <span v-if="s.distance">
               {{
                 s.distance < 1000
-                  ? s.distance.toFixed(1) + 'm'
-                  : (s.distance / 1000).toFixed(1) + 'km'
+                  ? Number(s.distance).toFixed(1) + 'm'
+                  : (Number(s.distance) / 1000).toFixed(1) + 'km'
               }}
             </span>
           </div>

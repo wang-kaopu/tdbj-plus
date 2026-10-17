@@ -8,13 +8,9 @@ import {
 import { ref } from 'vue'
 import router from '@/router'
 import { StarFilled } from '@element-plus/icons-vue'
+import { resolveBlogImageUrl } from '@/utils/blogImage'
 
 const typeImages = import.meta.glob('/src/assets/imgs/types/*.png', {
-  eager: true,
-  query: '?url',
-  import: 'default'
-})
-const blogImages = import.meta.glob('/src/assets/imgs/blogs/**/*.jpg', {
   eager: true,
   query: '?url',
   import: 'default'
@@ -151,7 +147,7 @@ const toBlogDetail = (blog) => {
         <div v-for="blog in blogs" :key="blog.id" class="blog-box">
           <div class="blog-img" @click="toBlogDetail(blog)">
             <img
-              :src="blogImages['/src/assets' + blog.img]"
+              :src="resolveBlogImageUrl(blog.img)"
               :alt="blog.title"
             />
           </div>

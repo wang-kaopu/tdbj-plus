@@ -28,9 +28,11 @@ export function queryNearbyShops(params) {
 }
 // 查询店铺: 根据名称 名称为空时 查询所有店铺
 export const queryShopsByName = (name) =>
-  request.get('/shop/of/name', null, { params: { name } })
+  request.get('/shop/of/name', { params: { name } })
 // 创建博客
 export const createBlog = (data) => request.post('/blog', data)
 // 删除博客图片
 export const deleteBlogImage = (name) =>
-  request.delete('/upload/blog/delete', null, { params: { name } })
+  request.delete('/upload/blog/delete', {
+    params: { name: name.replace(/^\/imgs/, '') }
+  })

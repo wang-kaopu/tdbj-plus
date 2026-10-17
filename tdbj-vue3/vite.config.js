@@ -53,6 +53,10 @@ export default defineConfig({
         target: 'http://localhost:8085',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
+      },
+      '/imgs': {
+        target: 'http://localhost:8085',
+        changeOrigin: true
       }
     }
   }

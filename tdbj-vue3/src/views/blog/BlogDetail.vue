@@ -13,6 +13,7 @@ import {
 } from '@/api/blog/blog'
 import { getUser } from '@/api/user'
 import { formatTime } from '@/utils/format'
+import { resolveBlogImageUrl } from '@/utils/blogImage'
 
 const route = useRoute()
 const router = useRouter()
@@ -294,7 +295,7 @@ const go = (index) => {
       >
         <div class="swiper-item" v-for="(img, i) in blog.images" :key="i">
           <img
-            :src="`/src/assets${img}`"
+            :src="resolveBlogImageUrl(img)"
             alt=""
             style="width: 100%"
             height="100%"
@@ -345,7 +346,7 @@ const go = (index) => {
         <div style="width: 80%">
           <div class="name">{{ shop.name }}</div>
           <div>
-            <el-rate v-model="shop.score" disabled></el-rate>
+            <el-rate :model-value="Number(shop.score) / 10" disabled></el-rate>
           </div>
           <div class="shop-avg">￥{{ shop.avgPrice }}/人</div>
         </div>

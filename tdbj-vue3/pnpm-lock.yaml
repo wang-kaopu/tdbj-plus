@@ -17,15 +17,15 @@ importers:
       element-plus:
         specifier: ^2.9.7
         version: 2.9.7(vue@3.5.13)
-      tdbj-vue3:
-        specifier: 'file:'
-        version: file:(debug@4.4.0(supports-color@7.2.0))
       json-bigint:
         specifier: ^1.0.0
         version: 1.0.0
       pinia:
         specifier: ^3.0.1
         version: 3.0.2(vue@3.5.13)
+      tdbj-vue3:
+        specifier: 'file:'
+        version: file:(debug@4.4.0(supports-color@7.2.0))
       vue:
         specifier: ^3.5.13
         version: 3.5.13
@@ -1253,9 +1253,6 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
-  'tdbj-vue3@file:':
-    resolution: {directory: '', type: directory}
-
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
 
@@ -1808,6 +1805,9 @@ packages:
   synckit@0.11.4:
     resolution: {integrity: sha512-Q/XQKRaJiLiFIBNN+mndW7S/RHxvwzuZS6ZwmRzUBqJBv/5QIKCEwkBC8GBf8EQJKYnaFs0wOZbKTXBPj8L9oQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
+
+  'tdbj-vue3@file:':
+    resolution: {directory: '', type: directory}
 
   tinyexec@0.3.2:
     resolution: {integrity: sha512-KQQR9yN7R5+OSwaK0XQoj22pwHoTlgYqmUscPYoknOoWCWfj/5/ABTMRi69FrKU5ffPVh5QcFikpWJI/P1ocHA==}
@@ -3246,20 +3246,6 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  tdbj-vue3@file:(debug@4.4.0(supports-color@7.2.0)):
-    dependencies:
-      '@element-plus/icons-vue': 2.3.1(vue@3.5.13)
-      axios: 1.8.4(debug@4.4.0(supports-color@7.2.0))
-      element-plus: 2.9.7(vue@3.5.13)
-      json-bigint: 1.0.0
-      pinia: 3.0.2(vue@3.5.13)
-      vue: 3.5.13
-      vue-router: 4.5.0(vue@3.5.13)
-    transitivePeerDependencies:
-      - '@vue/composition-api'
-      - debug
-      - typescript
-
   hookable@5.5.3: {}
 
   human-signals@5.0.0: {}
@@ -3748,6 +3734,20 @@ snapshots:
     dependencies:
       '@pkgr/core': 0.2.4
       tslib: 2.8.1
+
+  tdbj-vue3@file:(debug@4.4.0(supports-color@7.2.0)):
+    dependencies:
+      '@element-plus/icons-vue': 2.3.1(vue@3.5.13)
+      axios: 1.8.4(debug@4.4.0(supports-color@7.2.0))
+      element-plus: 2.9.7(vue@3.5.13)
+      json-bigint: 1.0.0
+      pinia: 3.0.2(vue@3.5.13)
+      vue: 3.5.13
+      vue-router: 4.5.0(vue@3.5.13)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - debug
+      - typescript
 
   tinyexec@0.3.2: {}
 

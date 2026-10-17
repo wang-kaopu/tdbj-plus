@@ -37,23 +37,23 @@ instance.interceptors.request.use(
 //响应拦截器
 instance.interceptors.response.use(
   (response) => {
-    // 判断执行结果
-    if (response.status !== 200) {
-      // TODO 3.处理业务失败 给出弹窗提示
-      ElMessage.error(response.data.errorMsg || '响应拦截器提示：服务异常')
-      return Promise.reject(response.data.errorMsg)
+    const result = response.data
+    if (response.status !== 200 || result?.success === false) {
+      const message = result?.errorMsg || '服务响应失败'
+      ElMessage.error(message)
+      return Promise.reject(new Error(message))
     }
-    return response.data
+    return result
   },
   (error) => {
     if (error.response?.status === 401) {
       // TODO 4.未登录或者token过期 跳转到登录页
       ElMessage.error('响应拦截器提示：请先登录')
       router.push('/login')
-      return
+      return Promise.reject(error)
     }
     // TODO 5. 处理一般错误
-    ElMessage.error(error.response?.data.message || '响应拦截器提示：服务异常')
+    ElMessage.error(error.response?.data?.errorMsg || error.response?.data?.message || '服务响应失败')
     return Promise.reject(error)
   }
 )

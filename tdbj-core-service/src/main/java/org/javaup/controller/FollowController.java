@@ -5,6 +5,7 @@ import jakarta.annotation.Resource;
 import org.javaup.dto.Result;
 import org.javaup.service.IFollowService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,24 @@ public class FollowController {
     @PutMapping("/{id}/{isFollow}")
     public Result follow(@PathVariable("id") Long followUserId, @PathVariable("isFollow") Boolean isFollow) {
         return followService.follow(followUserId, isFollow);
+    }
+
+    /** 取消当前用户对指定用户的关注。 */
+    @DeleteMapping("/{id}")
+    public Result unfollow(@PathVariable("id") Long followUserId) {
+        return followService.follow(followUserId, false);
+    }
+
+    /** 查询指定用户关注的用户。 */
+    @GetMapping("/{id}")
+    public Result follows(@PathVariable("id") Long userId) {
+        return followService.follows(userId);
+    }
+
+    /** 查询关注指定用户的用户。 */
+    @GetMapping("/fans/{id}")
+    public Result fans(@PathVariable("id") Long userId) {
+        return followService.fans(userId);
     }
 
     @GetMapping("/or/not/{id}")

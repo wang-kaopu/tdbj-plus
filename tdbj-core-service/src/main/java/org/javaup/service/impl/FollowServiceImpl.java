@@ -95,4 +95,44 @@ public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow> impleme
                 .collect(Collectors.toList());
         return Result.ok(users);
     }
+
+    /**
+     * 查询指定用户关注的用户。
+     *
+     * @param userId 用户 ID
+     * @return 关注用户列表
+     */
+    @Override
+    public Result follows(Long userId) {
+        List<Long> followUserIds = query().eq("user_id", userId).list().stream()
+                .map(Follow::getFollowUserId)
+                .collect(Collectors.toList());
+        if (followUserIds.isEmpty()) {
+            return Result.ok(Collections.emptyList());
+        }
+        List<UserDTO> users = userService.listByIds(followUserIds).stream()
+                .map(user -> BeanUtil.copyProperties(user, UserDTO.class))
+                .collect(Collectors.toList());
+        return Result.ok(users);
+    }
+
+    /**
+     * 查询关注指定用户的用户。
+     *
+     * @param userId 用户 ID
+     * @return 粉丝列表
+     */
+    @Override
+    public Result fans(Long userId) {
+        List<Long> fanUserIds = query().eq("follow_user_id", userId).list().stream()
+                .map(Follow::getUserId)
+                .collect(Collectors.toList());
+        if (fanUserIds.isEmpty()) {
+            return Result.ok(Collections.emptyList());
+        }
+        List<UserDTO> users = userService.listByIds(fanUserIds).stream()
+                .map(user -> BeanUtil.copyProperties(user, UserDTO.class))
+                .collect(Collectors.toList());
+        return Result.ok(users);
+    }
 }

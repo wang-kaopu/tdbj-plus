@@ -101,6 +101,7 @@
 
 # 三、如何启动项目
 后端各 Maven 模块统一使用 Spring Boot 的 Log4j2 日志实现，日志配置位于 `tdbj-core-service/src/main/resources/log4j2.xml`。
+笔记图片保存在 `TDBJ_IMAGE_UPLOAD_DIR` 指定的目录下，默认值为 `./uploads`，相对于 Java 进程的工作目录。运行服务的用户需要对该目录拥有写入权限。
 
 - [Jenkins 自动发布配置](deploy/README.md)
 

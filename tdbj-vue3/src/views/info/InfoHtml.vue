@@ -4,9 +4,12 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElTabs, ElTabPane } from 'element-plus'
 import { ArrowLeft, Edit, ChatDotRound } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores'
-import { getUser, getUserBlog, getUserInfo } from '@/api/user'
+import { resolveBlogImageUrl } from '@/utils/blogImage'
 import {
-  indexQueryHotBlogsScroll,
+  getUser,
+  getUserBlog,
+  getUserInfo,
+  getFollowBlogs,
   indexAddLike,
   indexQueryBlogById
 } from '@/api/user'
@@ -77,15 +80,14 @@ const queryUserInfo = () => {
   // }
 }
 
+/** 根据后端返回的时间戳与偏移量加载关注用户的笔记。 */
 const queryBlogsOfFollow = (clear) => {
   if (clear) {
     params.offset = 0
     params.minTime = new Date().getTime() + 1
   }
-  const { offset: os } = params
-
   // 查询关注的用户的博客
-  indexQueryHotBlogsScroll(os)
+  getFollowBlogs(params.minTime, params.offset)
     .then(({ data }) => {
       if (!data) {
         return
@@ -203,7 +205,7 @@ const onScroll = (e) => {
           <div v-for="b in blogs" :key="b.id" class="blog-item">
             <div class="blog-img">
               <img
-                :src="'/src/assets' + b.images.split(',')[0]"
+                :src="resolveBlogImageUrl(b.images.split(',')[0])"
                 alt="博客图片"
               />
             </div>
@@ -224,8 +226,8 @@ const onScroll = (e) => {
         <el-tab-pane label="关注(0)" name="4">
           <div class="blog-list" @scroll="onScroll">
             <div class="blog-box" v-for="b in blogs2" :key="b.id">
-              <div class="blog-img2" @click="router.push(`/blog/${b.id}`)">
-                <img :src="'/src/assets' + b.img" alt="博客图片" />
+              <div class="blog-img2" @click="router.push(`/blogDetail/${b.id}`)">
+                <img :src="resolveBlogImageUrl(b.img)" alt="博客图片" />
               </div>
               <div class="blog-title">{{ b.title }}</div>
               <div class="blog-foot">

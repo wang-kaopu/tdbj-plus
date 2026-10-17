@@ -9,6 +9,7 @@ import {
   queryShopsByName,
   createBlog
 } from '@/api/blog'
+import { resolveBlogImageUrl } from '@/utils/blogImage'
 // import { showToast } from 'vant'
 
 const router = useRouter()
@@ -103,13 +104,21 @@ const openFileDialog = () => {
 
 const fileSelected = (event) => {
   const file = event.target.files[0]
+  event.target.value = ''
   if (!file) return
+  if (!file.type.startsWith('image/')) {
+    ElMessage.error('请选择图片格式文件')
+    return
+  }
 
   const formData = new FormData()
   formData.append('file', file)
 
   uploadBlogImage(formData)
     .then((res) => {
+      if (typeof res.data !== 'string' || !res.data.startsWith('/blogs/')) {
+        throw new Error('上传接口未返回有效图片路径')
+      }
       fileList.value.push('/imgs' + res.data)
     })
     .catch((err) => {
@@ -177,6 +186,7 @@ const publishBlog = async () => {
     <div class="upload-box">
       <input
         type="file"
+        accept="image/*"
         @change="fileSelected"
         name="file"
         ref="fileInput"
@@ -188,7 +198,7 @@ const publishBlog = async () => {
       </div>
       <div class="pic-list" v-if="fileList.length > 0">
         <div class="pic-box" v-for="(f, i) in fileList" :key="i">
-          <img :src="`/src/assets${f}`" alt="图片" />
+          <img :src="resolveBlogImageUrl(f)" alt="图片" />
           <div class="delete" @click="deletePic(i)">
             <i class="iconfont icon-close"></i>
           </div>

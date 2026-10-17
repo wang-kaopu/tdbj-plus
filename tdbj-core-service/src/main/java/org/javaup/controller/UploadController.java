@@ -34,8 +34,8 @@ public class UploadController {
             String originalFilename = image.getOriginalFilename();
             // 生成新文件名
             String fileName = createNewFileName(originalFilename);
-            // 保存文件
-            image.transferTo(new File(imageUploadDir, fileName.substring(1)));
+            // Tomcat 会将相对路径解释为临时上传目录中的路径
+            image.transferTo(new File(imageUploadDir, fileName.substring(1)).getAbsoluteFile());
             // 返回结果
             log.debug("文件上传成功，{}", fileName);
             return Result.ok(fileName);
@@ -45,7 +45,7 @@ public class UploadController {
     }
 
     /** 删除上传目录中的笔记图片。 */
-    @GetMapping("/blog/delete")
+    @DeleteMapping("/blog/delete")
     public Result deleteBlogImg(@RequestParam("name") String filename) {
         Path uploadRoot = Path.of(imageUploadDir).toAbsolutePath().normalize();
         Path file = uploadRoot.resolve(filename.startsWith("/") ? filename.substring(1) : filename).normalize();

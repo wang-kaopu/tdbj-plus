@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# tdbj-plus managed post-receive hook
+set -euo pipefail
+umask 077
+
+repo=/opt/git/tdbj-plus.git
+config=/etc/tdbj-plus/jenkins-trigger.env
+log=/var/log/tdbj-plus-jenkins-trigger.log
+zero=0000000000000000000000000000000000000000
+master_revision=""
+
+while read -r oldrev newrev ref; do
+    if [[ "$ref" != refs/heads/master || "$newrev" == "$zero" || -n "$master_revision" ]]; then
+        continue
+    fi
+    if [[ ! "$newrev" =~ ^[0-9a-f]{40}$ ]] || ! git --git-dir="$repo" cat-file -e "$newrev^{commit}"; then
+        printf 'tdbj-plus: master 的提交 SHA 无效：%s\n' "$newrev" >&2
+        exit 1
+    fi
+    master_revision="$newrev"
+done
+
+if [[ -z "$master_revision" ]]; then
+    exit 0
+fi
+
+timestamp="$(date --iso-8601=seconds)"
+if [[ ! -f "$config" || "$(stat -c '%U:%G:%a' "$config" 2>/dev/null)" != root:root:600 ]]; then
+    printf '%s revision=%s status=configuration-error result=missing-or-insecure-config\n' "$timestamp" "$master_revision" >> "$log"
+    echo 'tdbj-plus: Jenkins 认证配置缺失或权限错误；请检查 /etc/tdbj-plus/jenkins-trigger.env' >&2
+    exit 1
+fi
+
+source "$config"
+if [[ -z "${JENKINS_USER:-}" || -z "${JENKINS_API_TOKEN:-}" || -z "${JENKINS_URL:-}" ]]; then
+    printf '%s revision=%s status=configuration-error result=missing-credentials\n' "$timestamp" "$master_revision" >> "$log"
+    echo 'tdbj-plus: Jenkins 用户名、API Token 或本机 URL 缺失' >&2
+    exit 1
+fi
+if [[ ! "$JENKINS_URL" =~ ^http://(127[.]0[.]0[.]1|localhost):[0-9]+/?$ ]]; then
+    printf '%s revision=%s status=configuration-error result=invalid-local-url\n' "$timestamp" "$master_revision" >> "$log"
+    echo 'tdbj-plus: JENKINS_URL 必须指向服务器本机 HTTP 地址' >&2
+    exit 1
+fi
+
+jenkins_url="${JENKINS_URL%/}/job/tdbj-local/buildWithParameters"
+error_file="$(mktemp /var/log/.tdbj-jenkins-trigger.XXXXXX)"
+trap 'rm -f "$error_file"' EXIT
+
+for attempt in 1 2 3; do
+    if status="$(printf 'user = "%s:%s"\n' "$JENKINS_USER" "$JENKINS_API_TOKEN" | curl --config - --noproxy '*' --silent --show-error --connect-timeout 3 --max-time 12 --output /dev/null --write-out '%{http_code}' --request POST --data-urlencode "REVISION=$master_revision" "$jenkins_url" 2>"$error_file")"; then
+        if [[ "$status" == 201 ]]; then
+            printf '%s revision=%s attempt=%s http=%s result=queued\n' "$timestamp" "$master_revision" "$attempt" "$status" >> "$log"
+            printf 'tdbj-plus: Jenkins 已接收构建请求，提交 %s\n' "$master_revision" >&2
+            exit 0
+        fi
+        printf '%s revision=%s attempt=%s http=%s result=request-rejected\n' "$timestamp" "$master_revision" "$attempt" "$status" >> "$log"
+        if [[ "$status" == 400 || "$status" == 401 || "$status" == 403 || "$status" == 404 ]]; then
+            printf 'tdbj-plus: Jenkins 拒绝构建请求，HTTP %s；请检查认证和 Job 配置\n' "$status" >&2
+            exit 1
+        fi
+    else
+        printf '%s revision=%s attempt=%s http=%s result=network-error detail=%s\n' "$timestamp" "$master_revision" "$attempt" "${status:-000}" "$(tr '\n' ' ' < "$error_file")" >> "$log"
+    fi
+    if [[ "$attempt" -lt 3 ]]; then sleep "$attempt"; fi
+done
+
+printf 'tdbj-plus: Jenkins 构建请求失败，提交 %s；请查看 %s\n' "$master_revision" "$log" >&2
+exit 1

@@ -1,3 +1,4 @@
+SET NAMES utf8mb4;
 USE tdbj_1;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
