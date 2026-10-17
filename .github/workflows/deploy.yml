@@ -1,0 +1,42 @@
+name: 构建探店笔记发布包
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          cache-dependency-path: '**/pom.xml'
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: tdbj-vue3/package-lock.json
+      - name: 构建后端
+        run: mvn -B -ntp -DskipTests package
+      - name: 检查并构建前端
+        working-directory: tdbj-vue3
+        run: |
+          npm ci
+          npm run check
+      - name: 打包发布文件
+        run: bash deploy/package.sh
+      - name: 保存发布包
+        uses: actions/upload-artifact@v4
+        with:
+          name: tdbj-release
+          path: ${{ runner.temp }}/tdbj-release.tar.gz
+          if-no-files-found: error

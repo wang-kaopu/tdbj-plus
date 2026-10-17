@@ -1,0 +1,20 @@
+[Unit]
+Description=探店笔记 Java 服务
+Wants=network-online.target
+Requires=docker.service
+After=network-online.target docker.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/opt/tdbj-plus/current
+Environment=TDBJ_IMAGE_UPLOAD_DIR=/opt/tdbj-plus/shared/images
+Environment=TDBJ_LOG_HOME=/opt/tdbj-plus
+ExecStart=/usr/bin/java -Xms256m -Xmx768m -jar /opt/tdbj-plus/current/app.jar --server.address=127.0.0.1 --spring.datasource.url=jdbc:shardingsphere:absolutepath:/opt/tdbj-plus/shared/shardingsphere.yaml
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
