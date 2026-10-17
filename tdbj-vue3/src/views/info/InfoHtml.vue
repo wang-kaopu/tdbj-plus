@@ -1,7 +1,7 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { ElMessage, ElTabs, ElTabPane } from 'element-plus'
+import { ElMessage, ElMessageBox, ElTabs, ElTabPane } from 'element-plus'
 import { ArrowLeft, Edit, ChatDotRound } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores'
 import { resolveBlogImageUrl } from '@/utils/blogImage'
@@ -13,6 +13,7 @@ import {
   indexAddLike,
   indexQueryBlogById
 } from '@/api/user'
+import { deleteBlog } from '@/api/blog'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -57,6 +58,24 @@ const queryBlogs = () => {
     .catch(() => {
       ElMessage.error('获取用户博客失败')
     })
+}
+
+/** 确认并删除当前用户发布的笔记。 */
+const deleteMyBlog = async (blog) => {
+  try {
+    await ElMessageBox.confirm('删除后无法恢复，确定删除这篇笔记吗？', '删除笔记', {
+      confirmButtonText: '删除',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+    await deleteBlog(blog.id)
+    blogs.value = blogs.value.filter((item) => String(item.id) !== String(blog.id))
+    ElMessage.success('笔记已删除')
+  } catch (error) {
+    if (error === 'cancel' || error === 'close') {
+      return
+    }
+  }
 }
 const queryUserInfo = () => {
   getUserInfo(user.value.id)
@@ -218,6 +237,9 @@ const onScroll = (e) => {
               <div class="blog-comments">
                 <el-icon><ChatDotRound /></el-icon> {{ b.comments }}
               </div>
+              <el-button type="danger" link @click.stop="deleteMyBlog(b)">
+                删除
+              </el-button>
             </div>
           </div>
         </el-tab-pane>

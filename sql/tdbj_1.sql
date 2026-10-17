@@ -220,6 +220,32 @@ INSERT INTO `tb_shop` VALUES (1,'103茶餐厅',1,'https://qcloud.dpfile.com/pc/j
 /*!40000 ALTER TABLE `tb_shop` ENABLE KEYS */;
 UNLOCK TABLES;
 
+INSERT INTO `tb_shop` (`id`, `name`, `type_id`, `images`, `area`, `address`, `x`, `y`, `avg_price`, `sold`, `comments`, `score`, `open_hours`, `create_time`, `update_time`) VALUES
+(15,'运河印象造型',3,'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=900&q=80','大关','金华路锦昌文华苑29号',120.149192,30.316078,128,0000003280,0000000845,48,'10:00-21:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(16,'乐堤港发型工作室',3,'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=900&q=80','拱宸桥/上塘','丽水路58号远洋乐堤港F2',120.149830,30.312110,168,0000002160,0000000678,49,'10:00-22:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(17,'北城造型沙龙',3,'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=900&q=80','北部新城','杭行路666号万达广场2层',120.128958,30.337252,98,0000001840,0000000426,46,'09:30-21:30',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(18,'运河健身中心',4,'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=900&q=80','运河上街','台州路2号运河上街购物中心3层',120.151954,30.324970,188,0000005620,0000001432,47,'06:30-23:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(19,'大关力量训练馆',4,'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=900&q=80','大关','上塘路458号水晶城购物中心5层',120.157780,30.310633,158,0000004380,0000001085,48,'07:00-22:30',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(20,'北城活力健身房',4,'https://images.unsplash.com/photo-1534258936925-c58bed479fcb?auto=format&fit=crop&w=900&q=80','北部新城','杭行路666号万达广场3层',120.124691,30.336819,128,0000003910,0000000954,46,'07:00-22:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(21,'足下时光足疗馆',5,'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=900&q=80','大关','金华南路189号丝联166号2层',120.148603,30.318618,138,0000002480,0000000712,48,'12:00-02:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(22,'拱宸舒心按摩',5,'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=900&q=80','拱宸桥/上塘','上塘路1035号2层',120.151505,30.333422,168,0000001920,0000000568,47,'11:00-01:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(23,'水晶城足道会馆',5,'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=900&q=80','大关','上塘路458号水晶城购物中心4层',120.158530,30.310002,198,0000003170,0000000923,49,'10:00-02:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(24,'云水间美容SPA',6,'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=900&q=80','拱宸桥/上塘','丽水路66号远洋乐堤港2层',120.146659,30.312742,328,0000001730,0000000516,49,'10:00-22:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(25,'大关悦颜SPA',6,'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=900&q=80','大关','金华路锦昌文华苑31号',120.150210,30.316420,268,0000001420,0000000385,48,'10:00-21:30',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(26,'北城沐光生活馆',6,'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=900&q=80','北部新城','湖州街567号北城天地2层',120.130453,30.327655,358,0000001260,0000000342,47,'10:00-22:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(27,'运河亲子乐园',7,'https://images.unsplash.com/photo-1472162072942-cd5147eb3902?auto=format&fit=crop&w=900&q=80','运河上街','台州路2号运河上街购物中心3层',120.150526,30.325231,96,0000004310,0000001126,48,'10:00-21:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(28,'水晶城儿童探索馆',7,'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=900&q=80','大关','上塘路458号水晶城购物中心3层',120.157780,30.310633,128,0000003650,0000000942,47,'10:00-21:30',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(29,'北城家庭游乐场',7,'https://images.unsplash.com/photo-1471286174890-9c112ffca5b4?auto=format&fit=crop&w=900&q=80','北部新城','杭行路666号万达广场3层',120.124691,30.336819,88,0000002890,0000000734,46,'10:00-22:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(30,'运河微醺酒吧',8,'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=900&q=80','运河上街','台州路2号运河上街购物中心1层',120.149093,30.324666,126,0000002630,0000000678,47,'17:00-02:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(31,'乐堤港夜色酒馆',8,'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=900&q=80','拱宸桥/上塘','丽水路58号远洋乐堤港1层',120.149830,30.312110,158,0000002180,0000000591,48,'16:00-02:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(32,'大关月光清吧',8,'https://images.unsplash.com/photo-1513558161293-cdaf765edfd7?auto=format&fit=crop&w=900&q=80','大关','上塘路458号水晶城购物中心1层',120.158530,30.310002,98,0000001760,0000000437,46,'17:00-01:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(33,'运河派对空间',9,'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80','运河上街','台州路2号运河上街购物中心5层',120.151954,30.324970,688,0000000860,0000000248,48,'10:00-次日02:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(34,'水晶城欢聚轰趴馆',9,'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80','大关','上塘路458号水晶城购物中心6层',120.158530,30.310002,888,0000000730,0000000196,47,'10:00-次日02:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(35,'北城家庭派对馆',9,'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80','北部新城','杭行路666号万达广场4层',120.128958,30.337252,768,0000000610,0000000162,46,'10:00-次日02:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(36,'美甲日记工作室',10,'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=900&q=80','大关','金华路锦昌文华苑29号2层',120.149192,30.316078,128,0000002810,0000000734,49,'10:00-21:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(37,'乐堤港指尖美学',10,'https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=900&q=80','拱宸桥/上塘','丽水路66号远洋乐堤港2层',120.146659,30.312742,168,0000001940,0000000521,48,'10:00-22:00',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(38,'北城美睫美甲屋',10,'https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=900&q=80','北部新城','湖州街567号北城天地1层',120.130453,30.327655,148,0000001630,0000000438,47,'10:00-21:30',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
+
 --
 -- Table structure for table `tb_shop_type`
 --

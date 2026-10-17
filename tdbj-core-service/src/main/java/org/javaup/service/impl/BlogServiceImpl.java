@@ -2,6 +2,7 @@ package org.javaup.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
@@ -9,9 +10,11 @@ import org.javaup.dto.Result;
 import org.javaup.dto.ScrollResult;
 import org.javaup.dto.UserDTO;
 import org.javaup.entity.Blog;
+import org.javaup.entity.BlogComments;
 import org.javaup.entity.Follow;
 import org.javaup.entity.User;
 import org.javaup.mapper.BlogMapper;
+import org.javaup.service.IBlogCommentsService;
 import org.javaup.service.IBlogService;
 import org.javaup.service.IFollowService;
 import org.javaup.service.IUserService;
@@ -21,6 +24,7 @@ import org.javaup.utils.UserHolder;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +51,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
 
     @Resource
     private IFollowService followService;
+
+    @Resource
+    private IBlogCommentsService blogCommentsService;
     
     @Resource
     private SnowflakeIdGenerator snowflakeIdGenerator;
@@ -166,6 +173,30 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         }
         // 5.返回id
         return Result.ok(blog.getId());
+    }
+
+    /**
+     * 删除当前用户的笔记，并清除评论、点赞和粉丝收件箱中的关联数据。
+     *
+     * @param id 笔记 ID
+     * @return 删除结果
+     */
+    @Override
+    @Transactional
+    public Result deleteBlog(Long id) {
+        Long userId = UserHolder.getUser().getId();
+        boolean deleted = remove(new QueryWrapper<Blog>().eq("id", id).eq("user_id", userId));
+        if (!deleted) {
+            return Result.fail("笔记不存在或无权删除");
+        }
+
+        blogCommentsService.remove(new QueryWrapper<BlogComments>().eq("blog_id", id));
+        stringRedisTemplate.delete(BLOG_LIKED_KEY + id);
+        List<Follow> followers = followService.query().eq("follow_user_id", userId).list();
+        for (Follow follow : followers) {
+            stringRedisTemplate.opsForZSet().remove(FEED_KEY + follow.getUserId(), id.toString());
+        }
+        return Result.ok();
     }
 
     @Override

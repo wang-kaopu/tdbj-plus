@@ -9,6 +9,7 @@ import org.javaup.entity.Blog;
 import org.javaup.service.IBlogService;
 import org.javaup.utils.SystemConstants;
 import org.javaup.utils.UserHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +36,17 @@ public class BlogController {
     @PostMapping
     public Result saveBlog(@RequestBody Blog blog) {
         return blogService.saveBlog(blog);
+    }
+
+    /**
+     * 删除当前登录用户发布的笔记。
+     *
+     * @param id 笔记 ID
+     * @return 删除结果
+     */
+    @DeleteMapping("/{id}")
+    public Result deleteBlog(@PathVariable("id") Long id) {
+        return blogService.deleteBlog(id);
     }
 
     @PutMapping("/like/{id}")

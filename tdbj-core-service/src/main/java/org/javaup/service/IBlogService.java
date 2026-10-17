@@ -21,6 +21,14 @@ public interface IBlogService extends IService<Blog> {
 
     Result saveBlog(Blog blog);
 
+    /**
+     * 删除当前登录用户发布的笔记及其关联数据。
+     *
+     * @param id 笔记 ID
+     * @return 删除结果
+     */
+    Result deleteBlog(Long id);
+
     Result queryBlogOfFollow(Long max, Integer offset);
 
 }

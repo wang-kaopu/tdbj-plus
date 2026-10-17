@@ -31,6 +31,8 @@ export const queryShopsByName = (name) =>
   request.get('/shop/of/name', { params: { name } })
 // 创建博客
 export const createBlog = (data) => request.post('/blog', data)
+/** 删除当前登录用户发布的笔记。 */
+export const deleteBlog = (id) => request.delete(`/blog/${id}`)
 // 删除博客图片
 export const deleteBlogImage = (name) =>
   request.delete('/upload/blog/delete', {
